@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Weather App</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Hind", sans-serif;
+        text-align: center;
+        font-weight: 500;
+      }
+      body {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100vh;
+      }
+      #weather {
+        font-size: 30px;
+        margin: 50px auto;
+        letter-spacing: 5px;
+      }
+      .box {
+        z-index: 0;
+        background-color: #a5bbdd;
+        width: 310px;
+        max-width: 330px;
+        padding: 20px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+          rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .info > div {
+        margin: 30px auto;
+      }
+      .box {
+        position: relative;
+      }
+      .-one,
+      .-two,
+      .-three {
+        width: 550px;
+        height: 550px;
+        background: rgba(197, 216, 243, 0.5);
+        position: absolute;
+        bottom: -300px;
+        border-radius: 40%;
+        z-index: -1;
+      }
+
+      @-webkit-keyframes rotating {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes rotating2 {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes rotating3 {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      .rotating {
+        -webkit-animation: rotating 7s linear infinite;
+      }
+      .rotating2 {
+        -webkit-animation: rotating 6.5s linear infinite;
+      }
+      .rotating3 {
+        -webkit-animation: rotating 6.2s linear infinite;
+      }
+      p {
+        font-weight: 300;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <div class="rotating -one"></div>
+      <div class="rotating2 -two"></div>
+      <div class="rotating3 -three"></div>
+      <div id="weather">{%tempStat%}</div>
+
+      <div class="info">
+        <div>
+          <h1 class="location">
+            <i class="fa-solid fa-street-view"></i>
+            {%location%},{%country%}
+          </h1>
+          <p id="date">wed | oct 23 | 10:00AM</p>
+        </div>
+        <div>
+          <h1 class="temp">{%currTemp%}&deg;C</h1>
+          <p class="min_maxtemp">
+            Min {%minTemp%}&deg;C | Max {%maxTemp%}&deg;C
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      //setting update and time
+      const curDate = document.getElementById("date");
+      const weatherCon = document.getElementById("weather");
+
+      const tempStat = `{%tempStat%}`;
+      console.log(weatherCon.innerHTML == "Clouds");
+      if (tempStat === "Sunny") {
+        weatherCon.innerHTML = `
+        <i class="fa-solid fa" style="color: #00000">${weatherCon.innerHTML}</i>
+        `;
+      } else if (weatherCon.innerHTML == "Clouds") {
+        weatherCon.innerHTML = `
+        <i class="fa-solid fa" style="color: #0000">${weatherCon.innerHTML}</i>
+      `;
+      } else if (tempStat === "Rainy") {
+        weatherCon.innerHTML = `
+        <i class="fa-solid fa" style="color: #00000">${weatherCon.innerHTML}</i>
+      `;
+      } else if (tempStat === "Haze") {
+        weatherCon.innerHTML = `
+        <i class="fa-solid fa" style="color: #00000">${weatherCon.innerHTML}</i>
+      `;
+      } else {
+        weatherCon.innerHTML = `
+        <i class="fa-solid fa" style="color: #00000">${weatherCon.innerHTML}</i>
+        `;
+      }
+      const getCurrentDat = () => {
+        const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        let currTime = new Date();
+
+        currTime = currTime.getDay();
+        curDate.innerHTML = weekday[currTime];
+      };
+      const getCurrentTime = () => {
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sept",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        let currTime = new Date();
+        let date = currTime.getDate();
+        let month = currTime.getMonth();
+        let year = currTime.getFullYear();
+        let hour = currTime.getHours();
+        let min = currTime.getMinutes();
+        let sec = currTime.getSeconds();
+
+        let sym = "AM";
+        if (hour >= 12) {
+          sym = "PM";
+          hour = "0" + hour - 12;
+        } else {
+          hour = "0" + hour;
+        }
+
+        if (min < 10) {
+          min = "0" + min;
+        }
+        curDate.innerHTML += ` | ${months[month]} ${date} | ${hour}:${min}${sym}`;
+      };
+      getCurrentDat();
+      getCurrentTime();
+    </script>
+  </body>
+</html>
